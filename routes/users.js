@@ -198,16 +198,24 @@ router.get("/checkLogin", function (req, res, next) {
 })
 // 加入购物车
 router.post('/goods/addCart', function (req, res, next) {
-  // 没有判断当前购物车有没有数据
+  try {
+    // 因为我们要把商品添加到当前用户名下，所以需要一个用户Id
+    // 往用户 的名下去插购物车信息，判断，如果用户名下已经有了，只需要更新一下数量
+    // get取参数: req.params  post取参req.body.productId
+    // var _id = '1';
+    var _id = req.cookies._id;
+    // ProductId = req.body.productId;
+    // 拿到用户信息，返回了userDoc
+    var productId = req.body.productId;
+  } catch (err) {
+    res.json({
+      status: '1',
+      msg: err.message
+    });
+    console.log(err);
+  }
 
-  // 因为我们要把商品添加到当前用户名下，所以需要一个用户Id
-  // 往用户 的名下去插购物车信息，判断，如果用户名下已经有了，只需要更新一下数量
-  // get取参数: req.params  post取参req.body.productId
-  // var _id = '1';
-  var _id = req.cookies._id;
-  // ProductId = req.body.productId;
-  // 拿到用户信息，返回了userDoc
-  var productId = req.body.productId;
+
   // console.log(req.body.productId)
 
   // 通过_id查询用户表，返回userDoc用户表的数据
@@ -674,6 +682,7 @@ router.post("/editCheckAll", function (req, res, next) {
 router.post("/setDefault", function (req, res, next) {
   var _id = req.cookies._id,
     addressId = req.body.addressId;
+  console.log(req.body)
   if (!addressId) {
     res.json({
       status: '1003',
@@ -681,7 +690,7 @@ router.post("/setDefault", function (req, res, next) {
       result: ''
     });
   } else {
-    User.findOne({
+    db.User.findOne({
       _id: _id
     }, function (err, doc) {
       if (err) {

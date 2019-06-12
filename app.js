@@ -19,8 +19,13 @@ app.all('*', function (req, res, next) {
 });
 // node.js 的express服务器报 413 payload too large
 var bodyParser = require('body-parser');
-app.use(bodyParser.json({limit: '50mb'}));
-app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
+app.use(bodyParser.json({
+  limit: '50mb'
+}));
+app.use(bodyParser.urlencoded({
+  limit: '50mb',
+  extended: true
+}));
 //session
 var session = require('express-session');
 app.use(session({
@@ -47,7 +52,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // 捕获登录状态
 // app.use(function (req, res, next) { // 进入路由之前优先进入function
 //   // console.log(req)
-//   if (req.cookies.userId) { // 有cookies,说明已经登录
+//   if (req.cookies._id) { // 有cookies,说明已经登录
 //     next();
 //   } else {
 //     console.log("url:" + req.originalUrl);

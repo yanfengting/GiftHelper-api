@@ -79,7 +79,7 @@ var goodSchma = new mongoose.Schema({
 })
 // var bangdanSchma = new mongoose.Schema({})
 var swiperSchma = new mongoose.Schema({
-  "image_url": String // 图片
+  // "image_url": String // 图片
 })
 var jingxuanSchma = new mongoose.Schema({
   "cover_image_url": String, // 图片
