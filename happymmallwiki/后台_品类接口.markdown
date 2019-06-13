@@ -2,7 +2,7 @@
 
 ------
 
-####1.获取品类子节点(平级)
+#### 1.获取品类子节点(平级)
 
 http://localhost:8080/manage/category/get_category.do
 http://localhost:8080/manage/category/get_category.do?categoryId=0
@@ -71,7 +71,7 @@ fail
 
 ------
 
-####2.增加节点
+#### 2.增加节点
 
 **/manage/category/add_category.do**
 
@@ -103,7 +103,7 @@ fail
 
 ------
 
-####3.修改品类名字
+#### 3.修改品类名字
 
 http://localhost:8080/manage/category/set_category_name.do?categoryId=999&categoryName=%E5%98%BB%E5%98%BB
 http://localhost:8080/manage/category/set_category_name.do?categoryId=1&categoryName=%E5%98%BB%E5%98%BB
@@ -140,7 +140,7 @@ fail
 ------
 
 
-####4.获取当前分类id及递归子节点categoryId
+#### 4.获取当前分类id及递归子节点categoryId
 
 http://localhost:8080/manage/category/get_deep_category.do?categoryId=100001
 

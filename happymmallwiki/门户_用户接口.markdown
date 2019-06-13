@@ -1,6 +1,6 @@
 [MENU]
 
-####1.登录
+#### 1.登录
 
 
 **/user/login.do**  post(代码需要post方式请求),开放get，方便调试
@@ -39,7 +39,7 @@ success
 
 -------
 
-####2.注册
+#### 2.注册
 **/user/register.do**
 
 > request
@@ -71,7 +71,7 @@ fail
 
 --------
 
-####3.检查用户名是否有效
+#### 3.检查用户名是否有效
 
 **/user/check_valid.do**
 
@@ -111,7 +111,7 @@ fail
 -----------
 
 
-####4.获取登录用户信息
+#### 4.获取登录用户信息
 **/user/get_user_info.do**
 
 
@@ -150,7 +150,7 @@ fail
 
 ------
 
-####5.忘记密码
+#### 5.忘记密码
 **/user/forget_get_question.do**
 
 localhost:8080/user/forget_get_question.do?username=geely
@@ -184,7 +184,7 @@ fail
 
 ---------
 
-####6.提交问题答案
+#### 6.提交问题答案
 **/user/forget_check_answer.do**
 
 localhost:8080/user/forget_check_answer.do?username=aaa&question=aa&answer=sss
@@ -223,7 +223,7 @@ fail
 
 ------
 
-####7.忘记密码的重设密码
+#### 7.忘记密码的重设密码
 **/user/forget_reset_password.do**
 
 localhost:8080/user/forget_reset_password.do?username=aaa&passwordNew=xxx&forgetToken=531ef4b4-9663-4e6d-9a20-fb56367446a5
@@ -262,7 +262,7 @@ fail
 
 
 ------
-####8.登录中状态重置密码
+#### 8.登录中状态重置密码
 **/user/reset_password.do**
 
 > request
@@ -292,7 +292,7 @@ fail
 ```
 
 ------
-####9.登录状态更新个人信息
+#### 9.登录状态更新个人信息
 **/user/update_information.do**
 
 > request
@@ -322,7 +322,7 @@ fail
 
 
 ------
-####10.获取当前登录用户的详细信息，并强制登录
+#### 10.获取当前登录用户的详细信息，并强制登录
 **/user/get_information.do**
 
 
@@ -365,7 +365,7 @@ fail
 ------
 
 
-####11.退出登录
+#### 11.退出登录
 **/user/logout.do**
 
 > request
@@ -398,7 +398,7 @@ fail
 
 
 
-####模板
+#### 模板
 
 **/user/.do**
 

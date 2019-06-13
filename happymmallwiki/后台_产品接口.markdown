@@ -2,7 +2,7 @@
 
 ------
 
-####1.产品list
+#### 1.产品list
 
 http://localhost:8080/manage/product/list.do
 
@@ -80,7 +80,7 @@ fail
 
 ------
 
-####2.产品搜索
+#### 2.产品搜索
 
 http://localhost:8080/manage/product/search.do?productName=p
 
@@ -154,7 +154,7 @@ fail
 
 ------
 
-####3.图片上传
+#### 3.图片上传
 
 **/manage/product/upload.do**
 
@@ -191,7 +191,7 @@ status!=0的时候
 
 ------
 
-####4.产品详情
+#### 4.产品详情
 
 http://localhost:8080/manage/product/detail.do?productId=2
 
@@ -240,7 +240,7 @@ fail
 
 ------
 
-####5.产品上下架
+#### 5.产品上下架
 
 http://localhost:8080/manage/product/set_sale_status.do?productId=1&status=1
 
@@ -274,7 +274,7 @@ fail
 
 ------
 
-####6.新增OR更新产品
+#### 6.新增OR更新产品
 
 新增
 
@@ -326,7 +326,7 @@ fail
 
 
 
-####7.富文本上传图片
+#### 7.富文本上传图片
 
 
 **/manage/product/richtext_img_upload.do**
