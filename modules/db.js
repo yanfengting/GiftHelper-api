@@ -60,7 +60,7 @@ var userSchma = new mongoose.Schema({
       "Isdefault": String // 是否默认
     }
   ]
-})
+});
 var goodSchma = new mongoose.Schema({
   "cover_image_url": String, //图片
   "description": String, // 详细描述
@@ -73,34 +73,34 @@ var goodSchma = new mongoose.Schema({
   "short_description": String, //简单描述
   "url": String,
   "webp_urls": Array,
-  // 添加的属性 
+  // 添加的属性
   "checked": String,
   "productNum": Number
-})
+});
 // var bangdanSchma = new mongoose.Schema({})
 var swiperSchma = new mongoose.Schema({
   // "image_url": String // 图片
-})
+});
 var jingxuanSchma = new mongoose.Schema({
   "cover_image_url": String, // 图片
   "content_url": String, // 内容
   "title": String, // 标题
   "introduction": String // 描述
-})
-var colleagueSchma = new mongoose.Schema({})
-var gaySchma = new mongoose.Schema({})
-var nvyouSchma = new mongoose.Schema({})
-var zhangbeiSchma = new mongoose.Schema({})
-var babySchma = new mongoose.Schema({})
+});
+var colleagueSchma = new mongoose.Schema({});
+var gaySchma = new mongoose.Schema({});
+var nvyouSchma = new mongoose.Schema({});
+var zhangbeiSchma = new mongoose.Schema({});
+var babySchma = new mongoose.Schema({});
 
 
-var giftSchma = new mongoose.Schema({})
-var cyshSchma = new mongoose.Schema({})
-var qpggSchma = new mongoose.Schema({})
-var kjfSchma = new mongoose.Schema({})
-var mmdSchma = new mongoose.Schema({})
-var sjgSchma = new mongoose.Schema({})
-var wyfSchma = new mongoose.Schema({})
+var giftSchma = new mongoose.Schema({});
+var cyshSchma = new mongoose.Schema({});
+var qpggSchma = new mongoose.Schema({});
+var kjfSchma = new mongoose.Schema({});
+var mmdSchma = new mongoose.Schema({});
+var sjgSchma = new mongoose.Schema({});
+var wyfSchma = new mongoose.Schema({});
 
 // 集合模型
 // 定义一个User商品模型，可以根据这个商品模型调用其API方法。
@@ -110,7 +110,7 @@ var swiperModel = mongoose.model('swiper', swiperSchma);
 var jingxuanModel = mongoose.model('jingxuan', jingxuanSchma, 'jingxuans'); // 后面注明链接的是数据库的jingxuan集合
 
 // var bangdanModel = mongoose.model('bangdan', bangdanSchma, 'bangdans');
-var Goods = mongoose.model('Goods', goodSchma, 'goods')
+var Goods = mongoose.model('Goods', goodSchma, 'goods');
 
 var colleagueModel = mongoose.model('colleague', colleagueSchma, 'colleagues');
 var gayModel = mongoose.model('gay', gaySchma, 'gays');
@@ -143,4 +143,4 @@ module.exports = {
   wyfModel,
   // bangdanModel,
   Goods
-}
+};
