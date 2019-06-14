@@ -1,6 +1,6 @@
 #### 1.后台管理员登录
 
-**/manage/user/login.do**
+**/admin/login**
 
 
 > request
