@@ -6,13 +6,19 @@
     "start": "cross-env NODE_ENV=development nodemon --harmony index.js"
   },
   "dependencies": {
+    "chalk": "^2.4.2",
+    "config-lite": "^2.1.0",
+    "connect-mongo": "^2.0.3",
     "cookie-parser": "^1.4.4",
+    "crypto": "^1.0.1",
     "ejs": "^2.6.1",
     "express": "^4.17.1",
     "express-session": "^1.16.2",
+    "formidable": "^1.2.1",
     "mongoose": "^5.4.19",
     "morgan": "^1.9.1",
-    "nodemon": "^1.19.1"
+    "nodemon": "^1.19.1",
+    "time-formater": "^1.1.2"
   },
   "devDependencies": {
     "@babel/cli": "^7.4.4",
