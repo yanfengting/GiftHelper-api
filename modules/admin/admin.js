@@ -7,13 +7,14 @@ const adminSchema = new Schema({
   password: String,
   email: String,
   id: String,
+  index: Number,
   phone: Number,
   role: Number,
   createTime: String,
-  updateTime: String,
+  updateTime: String
 });
 
-adminSchema.index({ id: 1 });
+adminSchema.index({id: 1});
 
 const Admin = mongoose.model('Admin', adminSchema);
 

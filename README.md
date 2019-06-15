@@ -39,7 +39,7 @@ http://localhost:3000/users/addUser
 （gift-api）npm start
 （gift）npm run serve
 
-
+docker run -p 27017:27017 -v $PWD/db:/data/db -v $PWD:/data -d mongo
 
 ## 问题：怎么才能拿到链接要得到里面的html内容
 
@@ -64,3 +64,7 @@ http://localhost:3000/users/addUser
 * [门户_订单接口](happymmallwiki/门户_订单接口.markdown)
 * [门户_购物车接口](happymmallwiki/门户_购物车接口.markdown)
 
+## 后续开发优化
+* [✗]列表分页查询优化
+* [✓]关闭用户注册 
+ 
