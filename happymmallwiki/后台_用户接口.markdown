@@ -42,7 +42,7 @@ fail
 
 #### 2.用户列表
 
-**/manage/user/list.do**
+**/admin/list**
 
 
 > request

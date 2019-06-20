@@ -16,7 +16,7 @@ router.get('/', function (req, res, next) {
 // router.get('/addUser', function (req, res, next) {
 //   var docs = [{
 //     userid: "1",
-//     username: "admin",
+//     username: "user",
 //     password: "123456",
 //   }]
 //   db.User.insertMany(docs, function (err, result) {

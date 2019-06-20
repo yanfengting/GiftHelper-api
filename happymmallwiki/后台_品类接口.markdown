@@ -4,13 +4,13 @@
 
 #### 1.获取品类子节点(平级)
 
-http://localhost:8080/manage/category/get_category.do
-http://localhost:8080/manage/category/get_category.do?categoryId=0
+http://localhost:8080/manage/category/get_category
+http://localhost:8080/manage/category/get_category?categoryId=0
 
 
-http://localhost:8080/manage/category/get_category.do?categoryId=2
+http://localhost:8080/manage/category/get_category?categoryId=2
 
-**/manage/category/get_category.do**
+**/manage/category/get_category**
 
 > request
 
@@ -52,7 +52,7 @@ success
 ```
 
 
-http://localhost:8080/manage/category/get_category.do?categoryId=19
+http://localhost:8080/manage/category/get_category?categoryId=19
 
 
 fail
@@ -73,7 +73,7 @@ fail
 
 #### 2.增加节点
 
-**/manage/category/add_category.do**
+**/manage/category/add_category**
 
 > request
 
@@ -105,11 +105,11 @@ fail
 
 #### 3.修改品类名字
 
-http://localhost:8080/manage/category/set_category_name.do?categoryId=999&categoryName=%E5%98%BB%E5%98%BB
-http://localhost:8080/manage/category/set_category_name.do?categoryId=1&categoryName=%E5%98%BB%E5%98%BB
+http://localhost:8080/manage/category/set_category_name?categoryId=999&categoryName=%E5%98%BB%E5%98%BB
+http://localhost:8080/manage/category/set_category_name?categoryId=1&categoryName=%E5%98%BB%E5%98%BB
 
 
-**/manage/category/set_category_name.do**
+**/manage/category/set_category_name**
 
 > request
 
