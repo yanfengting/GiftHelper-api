@@ -13,7 +13,7 @@ class Category extends BaseComponent {
   // 获取品类
   async getCategory(req, res, next) {
     const {categoryId} = req.query;
-    const categorys = await CategorytModel.find({parentId: categoryId}, {_id: 0, _v: 0});
+    const categorys = await CategorytModel.find({parentId: categoryId}, {_id: 0, __v: 0});
     res.send({
       status: 0,
       data: categorys,

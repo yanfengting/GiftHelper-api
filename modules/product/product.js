@@ -16,12 +16,11 @@ const productSchema = new Schema({
   stock: Number,
   status: Number,
   createTime: String,
-  updateTime: String,
+  updateTime: String
 });
 
-productSchema.index({id: 1});
+productSchema.index({ id: 1 });
 
 const Product = mongoose.model("Product", productSchema);
-
 
 export default Product;

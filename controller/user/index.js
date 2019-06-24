@@ -1,7 +1,7 @@
 import UserModel from "../../modules/user/user";
 import BaseComponent from "../../prototype/baseComponent";
-import crypto from "crypto";
-import cookie from "cookie";
+// import crypto from "crypto";
+// import cookie from "cookie";
 import formidable from "formidable";
 
 // import dtime from 'time-formater';
@@ -23,11 +23,11 @@ class User extends BaseComponent {
         res.send({
           status: 0,
           type: "FORM_DATA_ERROR",
-          message: "表单信息错误",
+          message: "表单信息错误"
         });
         return;
       }
-      const {username, password} = fields;
+      const { username, password } = fields;
       try {
         if (!username) {
           throw new Error("用户名参数错误");
@@ -39,42 +39,45 @@ class User extends BaseComponent {
         res.send({
           status: 0,
           type: "GET_ERROR_PARAM",
-          message: err.message,
+          message: err.message
         });
         return;
       }
       const newpassword = this.encryption(password);
       try {
-        let admin = await UserModel.findOne({username: username}, {_id: 0, __v: 0});
+        let admin = await UserModel.findOne(
+          { username: username },
+          { _id: 0, __v: 0 }
+        );
         if (!admin) {
           res.send({
             status: 1,
-            msg: "该用户名不存在",
+            msg: "该用户名不存在"
           });
         } else if (newpassword.toString() !== admin.password.toString()) {
           res.send({
             status: 1,
-            msg: "密码错误",
+            msg: "密码错误"
           });
         } else {
           //写cookie 验证通过则登录
           // 1cookie名称 2cookie值 3设定他的一些参数
           res.cookie("JSESSIONID", this.encryption(`${admin.id}`), {
-            path: "/",
+            path: "/"
             // 存一个小时是1000 * 60 * 60
           });
           admin.password = null;
           res.send({
             status: 0,
             msg: "登录成功",
-            data: admin,
+            data: admin
           });
         }
       } catch (err) {
         console.log("登录管理员失败", err);
         res.json({
           status: 1,
-          msg: "登录管理员失败",
+          msg: "登录管理员失败"
         });
       }
     });
@@ -96,7 +99,7 @@ class User extends BaseComponent {
       createTime: time,
       updateTime: time,
     });
-    // create.id = this.HEX(create._id);
+    // create.id = this.createID(create._id);
     create.id = index;
     index++;
     create.save();
@@ -114,14 +117,13 @@ class User extends BaseComponent {
         createTime: time,
         updateTime: time
       });
-      // create.id = this.HEX(create._id);
+      // create.id = this.createID(create._id);
       create.id = create._id;
       create.index = index;
       console.log(index);
       index++;
       create.save();
     }, 1);*/
-
 
     /*
     // 批量修改管理员账号
@@ -179,7 +181,6 @@ class User extends BaseComponent {
     //     updateTime: '',
     //   });
     // });
-
   }
 
   async list(req, res, next) {
@@ -188,7 +189,7 @@ class User extends BaseComponent {
       if (err) {
         res.send({
           status: 1,
-          msg: "表单信息错误",
+          msg: "表单信息错误"
         });
         return;
       }
@@ -197,7 +198,7 @@ class User extends BaseComponent {
         if (fields.userID === undefined) {
           throw new Error("用户未登录,请登录");
         } else {
-          const userInfo = await UserModel.findOne({id: fields.userID});
+          const userInfo = await UserModel.findOne({ id: fields.userID });
           if (userInfo.role === 0) {
             throw new Error("没有权限");
           }
@@ -205,21 +206,26 @@ class User extends BaseComponent {
       } catch (err) {
         res.send({
           status: err.message === "没有权限" ? 1 : 10,
-          msg: err.message,
+          msg: err.message
         });
         return;
       }
       // 开始查询
       try {
-        let pageSize = fields.pageSize > 0 ? Number.parseInt(fields.pageSize) : 1;
+        let pageSize =
+          fields.pageSize > 0 ? Number.parseInt(fields.pageSize) : 1;
         let pageNum = fields.pageNum > 0 ? Number.parseInt(fields.pageNum) : 10;
         let total = await UserModel.find().estimatedDocumentCount();
-        let lastID = await UserModel.findOne({index: pageSize * pageNum + 1});
+        let lastID = await UserModel.findOne({ index: pageSize * pageNum + 1 });
         // 性能优化：获取最后一条数据
-        let list = await UserModel.find({"index": {"$lt": lastID.index}}, {
-          _id: 0,
-          __v: 0,
-        }).sort({_id: -1})
+        let list = await UserModel.find(
+          { index: { $lt: lastID.index } },
+          {
+            _id: 0,
+            __v: 0
+          }
+        )
+          .sort({ _id: -1 })
           .limit(pageNum);
         list = list.sort((a, b) => a.index - b.index);
         res.json({
@@ -231,21 +237,20 @@ class User extends BaseComponent {
             startRow: pageNum,
             total: total,
             pages: Math.ceil(total / pageNum),
-            list: list,
-          },
+            list: list
+          }
         });
       } catch (err) {
         console.log(err);
         res.send({
           status: 1,
-          msg: "查询失败",
+          msg: "查询失败"
         });
       }
     });
-
   }
 
-  encryption(password) {
+  /*encryption(password) {
     const newpassword = this.Md5(this.Md5(password).substr(2, 7) + this.Md5(password));
     return newpassword;
   }
@@ -255,10 +260,10 @@ class User extends BaseComponent {
     return md5.update(password).digest("base64");
   }
 
-  HEX(id) {
+  createID(id) {
     const hash = crypto.createHash("md5");
     return hash.update(`${id}`).digest("hex");
-  }
+  }*/
 }
 
 export default new User();
