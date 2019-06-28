@@ -1,4 +1,5 @@
 import ProductModel from "../../modules/product/product";
+import CategoryModel from "../../modules/category/category";
 import BaseComponent from "../../prototype/baseComponent";
 import crypto from "crypto";
 import fs from "fs";
@@ -17,8 +18,6 @@ class Product extends BaseComponent {
   async list(req, res, next) {
     const form = new formidable.IncomingForm();
     form.parse(req, async (err, fields, files) => {
-      console.log(fields);
-      console.log(req.cookies.JSESSIONID);
       // 判断用户是否登陆
       try {
         if (!req.cookies.JSESSIONID) {
@@ -44,24 +43,20 @@ class Product extends BaseComponent {
           });
           return;
         }
-        /*let lastID = await ProductModel.findOne({
-          id: total < pageSize * pageNum + 1 ? total : pageSize * pageNum + 1
-        });*/
         let lastID =
           total < pageSize * pageNum + 1 ? total + 1 : pageSize * pageNum + 1;
         // 性能优化：获取最后一条数据前的数据
         let list = await ProductModel.find(
-          { id: { $lt: lastID } },
+          { id: { $lt: lastID, $gt: pageSize * pageNum - pageSize } },
           {
             _id: 0,
             __v: 0
           }
         )
           .sort({ _id: -1 })
-          .limit(pageNum);
-        console.log("list:", list);
+          .limit(pageSize);
         // 数据倒序
-        list = list.sort((a, b) => a.index - b.index);
+        list = list.sort((a, b) => a.id - b.id);
         res.json({
           status: 0,
           data: {
@@ -95,16 +90,15 @@ class Product extends BaseComponent {
         return;
       }
       /*
-
-      name        : this.state.name,
-            subtitle    : this.state.subtitle,
-            categoryId  : parseInt(this.state.categoryId),
-            subImages   : this.getSubImagesString(),
-            detail      : this.state.detail,
-            price       : parseFloat(this.state.price),
-            stock       : parseInt(this.state.stock),
-            status      : this.state.status
-       */
+      name: this.state.name,
+      subtitle    : this.state.subtitle,
+      categoryId  : parseInt(this.state.categoryId),
+      subImages   : this.getSubImagesString(),
+      detail      : this.state.detail,
+      price       : parseFloat(this.state.price),
+      stock       : parseInt(this.state.stock),
+      status      : this.state.status
+      */
       const {
         name,
         subtitle,
@@ -117,12 +111,10 @@ class Product extends BaseComponent {
         id
       } = fields;
       try {
-        const findOne = await ProductModel.findOne({ id: id ? id : 1 });
+        const findOne = id ? await ProductModel.findOne({ id: id }) : null;
         if (!findOne) {
           const createInfo = await ProductModel.create(fields);
           let total = await ProductModel.find().estimatedDocumentCount();
-          // createInfo.id = this.createID(createInfo._id);
-          console.log(total);
           createInfo.id = total === 0 ? 1 : total;
           createInfo.save();
           res.send({
@@ -181,6 +173,74 @@ class Product extends BaseComponent {
         });
       } catch (err) {
         console.log(err);
+      }
+    });
+  }
+  async setSaleStatus(req, res, next) {
+    const form = new formidable.IncomingForm();
+    form.parse(req, async (err, fields, files) => {
+      if (err) {
+        res.send({
+          status: 1,
+          data: "修改产品状态失败"
+        });
+        return;
+      }
+      try {
+        const { productId, status } = fields;
+        const pruduct = await ProductModel.findOne({ id: productId });
+        if (!pruduct) {
+          throw new Error("修改产品状态失败");
+        } else {
+          pruduct.status = status;
+          pruduct.save();
+          res.send({
+            status: 0,
+            data: "修改产品状态成功"
+          });
+        }
+      } catch (err) {
+        res.send({
+          state: 1,
+          msg: err.message
+        });
+      }
+    });
+  }
+  async detail(req, res, next) {
+    const form = new formidable.IncomingForm();
+    form.parse(req, async (err, fields, files) => {
+      if (err) {
+        res.send({
+          status: 1,
+          data: "查询失败"
+        });
+        return;
+      }
+      try {
+        const { productId } = req.query;
+        const product = await ProductModel.findOne(
+          { id: productId },
+          { _id: 0, __v: 0 }
+        );
+        if (!product) {
+          throw new Error("暂无该数据");
+        } else {
+          product.imageHost = "http://127.0.0.1:3000/public/";
+          const category = await CategoryModel.findOne({
+            id: product.categoryId
+          });
+          product.parentCategoryId = category.parentId;
+          res.json({
+            status: 0,
+            data: product
+          });
+        }
+      } catch (err) {
+        res.send({
+          status: 1,
+          mag: err.message
+        });
       }
     });
   }

@@ -10,7 +10,7 @@ const productSchema = new Schema({
   subtitle: String,
   imageHost: String,
   mainImage: String,
-  subImages: Array,
+  subImages: String,
   detail: String,
   price: Number,
   stock: Number,
