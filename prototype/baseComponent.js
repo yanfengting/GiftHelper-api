@@ -1,5 +1,7 @@
 import cookie from "cookie";
 import crypto from "crypto";
+import chinese from "chinese-simplified-common-characters";
+
 export default class BaseComponent {
   constructor() {
     this.id = "aweqwqeqweq";
@@ -10,6 +12,7 @@ export default class BaseComponent {
     this.createID = this.createID.bind(this);
     this.Md5 = this.Md5.bind(this);
     this.encryption = this.encryption.bind(this);
+    this.createName = this.createName.bind(this);
   }
 
   isId(req) {
@@ -63,7 +66,7 @@ export default class BaseComponent {
 
   encryption(password) {
     const newpassword = this.Md5(
-      this.Md5(password).substr(2, 7) + this.Md5(password)
+      this.Md5(password).substr(2, 7) + this.Md5(password),
     );
     return newpassword;
   }
@@ -76,5 +79,13 @@ export default class BaseComponent {
   createID(id) {
     const hash = crypto.createHash("md5");
     return hash.update(`${id}`).digest("hex");
+  }
+
+  createName(len = 3) {
+    let str = "";
+    for (let i = 0; i < len; i++) {
+      str += chinese[Math.round(Math.random() * chinese.length)];
+    }
+    return str;
   }
 }

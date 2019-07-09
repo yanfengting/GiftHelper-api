@@ -6,7 +6,9 @@
     "start": "cross-env NODE_ENV=development nodemon --harmony index.js"
   },
   "dependencies": {
+    "@babel/plugin-transform-classes": "^7.4.4",
     "chalk": "^2.4.2",
+    "chinese-simplified-common-characters": "^1.0.1",
     "config-lite": "^2.1.0",
     "connect-mongo": "^2.0.3",
     "cookie-parser": "^1.4.4",

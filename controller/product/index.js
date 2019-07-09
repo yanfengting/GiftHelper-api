@@ -3,9 +3,7 @@ import CategoryModel from "../../modules/category/category";
 import BaseComponent from "../../prototype/baseComponent";
 import crypto from "crypto";
 import fs from "fs";
-import cookie from "cookie";
 import formidable from "formidable";
-import UserModel from "../../modules/user/user";
 
 class Product extends BaseComponent {
   constructor() {
@@ -13,6 +11,8 @@ class Product extends BaseComponent {
     this.save = this.save.bind(this);
     this.list = this.list.bind(this);
     this.upload = this.upload.bind(this);
+    this.create = this.create.bind(this);
+    this.createName = this.createName.bind(this);
   }
 
   async list(req, res, next) {
@@ -26,7 +26,7 @@ class Product extends BaseComponent {
       } catch (err) {
         res.send({
           status: 10,
-          msg: err.message
+          msg: err.message,
         });
         return;
       }
@@ -39,7 +39,7 @@ class Product extends BaseComponent {
         if (!total) {
           res.send({
             state: 1,
-            msg: "没有数据"
+            msg: "没有数据",
           });
           return;
         }
@@ -47,13 +47,13 @@ class Product extends BaseComponent {
           total < pageSize * pageNum + 1 ? total + 1 : pageSize * pageNum + 1;
         // 性能优化：获取最后一条数据前的数据
         let list = await ProductModel.find(
-          { id: { $lt: lastID, $gt: pageSize * pageNum - pageSize } },
+          {id: {$lt: lastID, $gt: pageSize * pageNum - pageSize}},
           {
             _id: 0,
-            __v: 0
-          }
+            __v: 0,
+          },
         )
-          .sort({ _id: -1 })
+          .sort({_id: -1})
           .limit(pageSize);
         // 数据倒序
         list = list.sort((a, b) => a.id - b.id);
@@ -66,14 +66,14 @@ class Product extends BaseComponent {
             startRow: pageNum,
             total: total,
             pages: Math.ceil(total / pageNum),
-            list: list
-          }
+            list: list,
+          },
         });
       } catch (err) {
         console.log(err);
         res.send({
           status: 1,
-          msg: err.message
+          msg: err.message,
         });
       }
     });
@@ -85,7 +85,7 @@ class Product extends BaseComponent {
       if (err) {
         res.send({
           status: 1,
-          data: "更新产品失败"
+          data: "更新产品失败",
         });
         return;
       }
@@ -108,34 +108,39 @@ class Product extends BaseComponent {
         price,
         stock,
         status,
-        id
+        id,
       } = fields;
       try {
-        const findOne = id ? await ProductModel.findOne({ id: id }) : null;
+        const findOne = id ? await ProductModel.findOne({id: id}) : null;
         if (!findOne) {
           const createInfo = await ProductModel.create(fields);
+          const time = Date.parse(new Date());
           let total = await ProductModel.find().estimatedDocumentCount();
           createInfo.id = total === 0 ? 1 : total;
+
+          createInfo.createTime = time;
+          createInfo.updateTime = time;
           createInfo.save();
           res.send({
             status: 0,
-            msg: "新增产品成功"
+            msg: "新增产品成功",
           });
         } else {
           Object.keys(fields).forEach(key => {
             findOne[key] = fields[key];
           });
+          findOne.updateTime = Date.parse(new Date());
           findOne.save();
           res.send({
             status: 0,
-            msg: "更新产品成功"
+            msg: "更新产品成功",
           });
         }
       } catch (err) {
         // console.log(err);
         res.send({
           status: 1,
-          data: "更新产品失败"
+          data: "更新产品失败",
         });
       }
     });
@@ -148,7 +153,7 @@ class Product extends BaseComponent {
       if (err) {
         res.send({
           status: 1,
-          data: "更新产品失败"
+          data: "更新产品失败",
         });
         return;
       }
@@ -162,33 +167,34 @@ class Product extends BaseComponent {
           fileName = fileMd5 + "." + fileType;
         fs.writeFileSync(
           "public/upload/images/" + fileName,
-          fs.readFileSync(files.upload_file.path)
+          fs.readFileSync(files.upload_file.path),
         );
         res.send({
           status: 0,
           data: {
             uri: fileName,
-            url: "http://localhost:3000/public/" + fileName
-          }
+            url: "http://localhost:3000/public/" + fileName,
+          },
         });
       } catch (err) {
         console.log(err);
       }
     });
   }
+
   async setSaleStatus(req, res, next) {
     const form = new formidable.IncomingForm();
     form.parse(req, async (err, fields, files) => {
       if (err) {
         res.send({
           status: 1,
-          data: "修改产品状态失败"
+          data: "修改产品状态失败",
         });
         return;
       }
       try {
-        const { productId, status } = fields;
-        const pruduct = await ProductModel.findOne({ id: productId });
+        const {productId, status} = fields;
+        const pruduct = await ProductModel.findOne({id: productId});
         if (!pruduct) {
           throw new Error("修改产品状态失败");
         } else {
@@ -196,54 +202,154 @@ class Product extends BaseComponent {
           pruduct.save();
           res.send({
             status: 0,
-            data: "修改产品状态成功"
+            data: "修改产品状态成功",
           });
         }
       } catch (err) {
         res.send({
           state: 1,
-          msg: err.message
+          msg: err.message,
         });
       }
     });
   }
+
   async detail(req, res, next) {
     const form = new formidable.IncomingForm();
     form.parse(req, async (err, fields, files) => {
       if (err) {
         res.send({
           status: 1,
-          data: "查询失败"
+          data: "查询失败",
         });
         return;
       }
       try {
-        const { productId } = req.query;
+        const {productId} = req.query;
         const product = await ProductModel.findOne(
-          { id: productId },
-          { _id: 0, __v: 0 }
+          {id: productId},
+          {_id: 0, __v: 0},
         );
         if (!product) {
           throw new Error("暂无该数据");
         } else {
           product.imageHost = "http://127.0.0.1:3000/public/";
           const category = await CategoryModel.findOne({
-            id: product.categoryId
+            id: product.categoryId,
           });
           product.parentCategoryId = category.parentId;
           res.json({
             status: 0,
-            data: product
+            data: product,
           });
         }
       } catch (err) {
         res.send({
           status: 1,
-          mag: err.message
+          mag: err.message,
         });
       }
     });
   }
+
+  async search(req, res, next) {
+    const form = new formidable.IncomingForm();
+    form.parse(req, async (err, fields, files) => {
+      if (err) {
+        res.send({
+          status: 1,
+          data: "查询失败",
+        });
+        return;
+      }
+      const {productId, productName, pageNum, pageSize} = fields;
+
+      let searchType, searchStr;
+      if (productId && productId !== "") {
+        searchType = "id";
+        searchStr = productId;
+      }
+      if (productName && productName !== "") {
+        searchType = "name";
+        searchStr = productName;
+      }
+      /*console.log(searchType);
+      console.log(searchStr);
+      res.send("ok");
+      return;*/
+      const reg = new RegExp(searchStr); //不区分大小写
+      let total = await ProductModel.find({
+        [searchType]: searchType === "id" ? searchStr : {$regex: reg},
+      }).countDocuments();
+      const search = await ProductModel.find(
+        {
+          [searchType]: searchType === "id" ? searchStr : {$regex: reg},
+        },
+        {_id: 0, __v: 0},
+      )
+        .skip(pageNum * pageSize)
+        .limit(Number.parseInt(pageSize));
+      console.log(pageSize);
+      res.send({
+        status: 0,
+        data: {
+          pageNum: pageNum,
+          pageSize: pageSize,
+          size: pageSize,
+          startRow: pageNum,
+          total: total,
+          list: search,
+        },
+      });
+    });
+  }
+
+  async create(req, res, next) {
+    try {
+      res.send("chinese");
+      const find = await ProductModel.find();
+      let index = 19005;
+      const interval = setInterval(async () => {
+        if (index + 1 === find.length) {
+          clearInterval(interval);
+          return;
+        }
+        const time = Date.parse(new Date());
+        find[index].createTime = time;
+        find[index].updateTime = time;
+        console.log(find[index].id);
+        find[index].save();
+        index++;
+      }, 100);
+
+      /*setInterval(async () => {
+        // setTimeout(async () => {
+        const time = Date.parse(new Date());
+        const createInfo = await ProductModel.create({
+          categoryId: 100014,
+          name: this.createName(),
+          subtitle: this.createName(5),
+          detail: "{\"blocks\":[{\"key\":\"1hg3t\",\"text\":\"hello\",\"type\":\"unstyled\",\"depth\":0,\"inlineStyleRanges\":[],\"entityRanges\":[],\"data\":{}}],\"entityMap\":{}}",
+          price: 100,
+          stock: 10,
+          status: 1,
+          createTime: time,
+          updateTime: time,
+        });
+        let total = await ProductModel.find().estimatedDocumentCount();
+        createInfo.id = total === 0 ? 1 : total;
+        console.log(createInfo.id);
+        createInfo.save();
+      }, 100);*/
+    } catch (e) {
+      console.log(e);
+    }
+    // res.send("正在运行数据创建程序");
+    // console.log(this.createName());
+
+
+  }
+
 }
 
 export default new Product();

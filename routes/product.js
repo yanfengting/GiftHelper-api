@@ -8,5 +8,7 @@ router.post("/list", Product.list);
 router.post("/upload", Product.upload);
 router.post("/set_sale_status", Product.setSaleStatus);
 router.get("/detail", Product.detail);
+router.get("/create", Product.create);
+router.post("/search", Product.search);
 
 export default router;
