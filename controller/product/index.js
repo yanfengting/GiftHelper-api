@@ -273,14 +273,10 @@ class Product extends BaseComponent {
         searchType = "name";
         searchStr = productName;
       }
-      /*console.log(searchType);
-      console.log(searchStr);
-      res.send("ok");
-      return;*/
       const reg = new RegExp(searchStr); //不区分大小写
-      let total = await ProductModel.find({
+      let total = await ProductModel.countDocuments({
         [searchType]: searchType === "id" ? searchStr : {$regex: reg},
-      }).countDocuments();
+      });
       const search = await ProductModel.find(
         {
           [searchType]: searchType === "id" ? searchStr : {$regex: reg},
@@ -304,10 +300,11 @@ class Product extends BaseComponent {
     });
   }
 
+  // 创建商品模拟数据
   async create(req, res, next) {
     try {
       res.send("chinese");
-      const find = await ProductModel.find();
+      /*const find = await ProductModel.find();
       let index = 19005;
       const interval = setInterval(async () => {
         if (index + 1 === find.length) {
@@ -320,9 +317,9 @@ class Product extends BaseComponent {
         console.log(find[index].id);
         find[index].save();
         index++;
-      }, 100);
+      }, 100);*/
 
-      /*setInterval(async () => {
+      setInterval(async () => {
         // setTimeout(async () => {
         const time = Date.parse(new Date());
         const createInfo = await ProductModel.create({
@@ -336,11 +333,12 @@ class Product extends BaseComponent {
           createTime: time,
           updateTime: time,
         });
-        let total = await ProductModel.find().estimatedDocumentCount();
+        let total = await ProductModel.countDocuments();
+        // let total = await ProductModel.estimatedDocumentCount();
         createInfo.id = total === 0 ? 1 : total;
         console.log(createInfo.id);
         createInfo.save();
-      }, 100);*/
+      }, 100);
     } catch (e) {
       console.log(e);
     }
