@@ -1,5 +1,6 @@
 import BaseComponent from "../../prototype/baseComponent";
 import UserModel from "../../modules/user/user";
+import ProductModel from "../../modules/product/product";
 
 class Statistic extends BaseComponent {
   constructor() {
@@ -9,11 +10,12 @@ class Statistic extends BaseComponent {
 
   async baseCount(req, res, next) {
     const userCount = await UserModel.find().estimatedDocumentCount();
+    const ProductCount = await ProductModel.find().estimatedDocumentCount();
     res.send({
       status: 0,
       data: {
         orderCount: 5835,
-        productCount: 3737,
+        productCount: ProductCount,
         userCount: userCount,
       },
     });

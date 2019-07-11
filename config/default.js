@@ -2,7 +2,7 @@
 
 module.exports = {
   // port: parseInt(process.env.PORT, 10) || 8001,
-  url: "mongodb://192.168.2.4:27017/mmall",
+  url: "mongodb://127.0.0.1:27017/mmall",
   session: {
     name: "SID",
     secret: "SID",

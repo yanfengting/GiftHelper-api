@@ -23,11 +23,11 @@ class User extends BaseComponent {
         res.send({
           status: 0,
           type: "FORM_DATA_ERROR",
-          message: "表单信息错误"
+          message: "表单信息错误",
         });
         return;
       }
-      const { username, password } = fields;
+      const {username, password} = fields;
       try {
         if (!username) {
           throw new Error("用户名参数错误");
@@ -39,45 +39,45 @@ class User extends BaseComponent {
         res.send({
           status: 0,
           type: "GET_ERROR_PARAM",
-          message: err.message
+          message: err.message,
         });
         return;
       }
       const newpassword = this.encryption(password);
       try {
         let admin = await UserModel.findOne(
-          { username: username },
-          { _id: 0, __v: 0 }
+          {username: username},
+          {_id: 0, __v: 0},
         );
         if (!admin) {
           res.send({
             status: 1,
-            msg: "该用户名不存在"
+            msg: "该用户名不存在",
           });
         } else if (newpassword.toString() !== admin.password.toString()) {
           res.send({
             status: 1,
-            msg: "密码错误"
+            msg: "密码错误",
           });
         } else {
           //写cookie 验证通过则登录
           // 1cookie名称 2cookie值 3设定他的一些参数
           res.cookie("JSESSIONID", this.encryption(`${admin.id}`), {
-            path: "/"
+            path: "/",
             // 存一个小时是1000 * 60 * 60
           });
           admin.password = null;
           res.send({
             status: 0,
             msg: "登录成功",
-            data: admin
+            data: admin,
           });
         }
       } catch (err) {
         console.log("登录管理员失败", err);
         res.json({
           status: 1,
-          msg: "登录管理员失败"
+          msg: "登录管理员失败",
         });
       }
     });
@@ -86,14 +86,13 @@ class User extends BaseComponent {
   // 关闭注册
   async register(req, res, next) {
     let index = 1;
-    /*
     // 创建单个管理员用户
     const time = Date.parse(new Date());
     const create = await UserModel.create({
-      id: '',
-      username: 'admin',
-      password: this.encryption('admin'),
-      email: 'honghaitzz11@gmail.com',
+      id: "",
+      username: "admin",
+      password: this.encryption("admin"),
+      email: "honghaitzz11@gmail.com",
       phone: null,
       role: 0,
       createTime: time,
@@ -103,7 +102,7 @@ class User extends BaseComponent {
     create.id = index;
     index++;
     create.save();
-    console.log(index);*/
+    console.log(index);
     /*// 批量创建管理员账号
     setInterval(async () => {
       const time = Date.parse(new Date());
@@ -189,12 +188,13 @@ class User extends BaseComponent {
       if (err) {
         res.send({
           status: 1,
-          msg: "表单信息错误"
+          msg: "表单信息错误",
         });
         return;
       }
       // 判断是否登陆
-      try {
+      console.log(fields);
+      /*try {
         if (fields.userID === undefined) {
           throw new Error("用户未登录,请登录");
         } else {
@@ -209,23 +209,25 @@ class User extends BaseComponent {
           msg: err.message
         });
         return;
-      }
+      }*/
       // 开始查询
       try {
         let pageSize =
           fields.pageSize > 0 ? Number.parseInt(fields.pageSize) : 1;
         let pageNum = fields.pageNum > 0 ? Number.parseInt(fields.pageNum) : 10;
         let total = await UserModel.find().estimatedDocumentCount();
-        let lastID = await UserModel.findOne({ index: pageSize * pageNum + 1 });
+        let lastID = await UserModel.findOne({index: pageSize * pageNum + 1});
         // 性能优化：获取最后一条数据
         let list = await UserModel.find(
-          { index: { $lt: lastID.index } },
+          {index: {$lt: lastID.index}},
           {
             _id: 0,
-            __v: 0
-          }
+            __v: 0,
+            id: 0,
+            password: 0,
+          },
         )
-          .sort({ _id: -1 })
+          .sort({_id: -1})
           .limit(pageNum);
         list = list.sort((a, b) => a.index - b.index);
         res.json({
@@ -237,14 +239,14 @@ class User extends BaseComponent {
             startRow: pageNum,
             total: total,
             pages: Math.ceil(total / pageNum),
-            list: list
-          }
+            list: list,
+          },
         });
       } catch (err) {
         console.log(err);
         res.send({
           status: 1,
-          msg: "查询失败"
+          msg: "查询失败",
         });
       }
     });
