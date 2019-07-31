@@ -3,9 +3,31 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "cross-env NODE_ENV=development nodemon --harmony index.js"
   },
-  "dependencies": { 
-    "mongoose": "^5.4.19"
+  "dependencies": {
+    "@babel/plugin-transform-classes": "^7.4.4",
+    "chalk": "^2.4.2",
+    "chinese-simplified-common-characters": "^1.0.1",
+    "config-lite": "^2.1.0",
+    "connect-mongo": "^2.0.3",
+    "cookie-parser": "^1.4.4",
+    "cors": "^2.8.5",
+    "crypto": "^1.0.1",
+    "ejs": "^2.6.1",
+    "express": "^4.17.1",
+    "express-session": "^1.16.2",
+    "formidable": "^1.2.1",
+    "mongoose": "^5.4.19",
+    "morgan": "^1.9.1",
+    "nodemon": "^1.19.1",
+    "time-formater": "^1.1.2"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.4.4",
+    "@babel/core": "^7.4.5",
+    "@babel/preset-env": "^7.4.5",
+    "@babel/register": "^7.4.4",
+    "cross-env": "^5.2.0"
   }
 }
