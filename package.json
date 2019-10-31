@@ -6,6 +6,6 @@
     "start": "node ./bin/www"
   },
   "dependencies": { 
-    "mongoose": "^5.4.19"
+    "mongoose": "^5.7.5"
   }
 }
